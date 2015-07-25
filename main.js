@@ -9,6 +9,17 @@ var exec = require('child_process').exec;
 
 var whichFile, paraMenu;
 
+var CONFIG = (function() {
+     var private = {
+         'pass': 'pa88W0rd'
+     };
+
+     return {
+        get: function(name) { return private[name]; }
+    };
+})();
+
+
 // append default actions to menu for OSX
 var initMenu = function () {
   try {
@@ -28,14 +39,16 @@ var initMenu = function () {
         label: 'Encrypt files',
         click: function(){
 			
-			var password = prompt("Please Enter Passwords", "pa$$W0rd");
+	
+			
+			var password = prompt("Please Enter Passwords", CONFIG.get('pass'));
 			
 			if (password == null) {
 				return;
 			}
 			
 			if (password == "") {
-				password="pa$$W0rd";
+				password = CONFIG.get('pass');
 			}
 			
 			if (process.platform == 'win32'){
@@ -83,14 +96,14 @@ var initMenu = function () {
 			}
 			else
 			{
-				var password = prompt("Please Enter Passwords", "pa$$W0rd");
+				var password = prompt("Please Enter Passwords", CONFIG.get('pass'));
 
 				if (password == null) {
 					return;
 				}			
 
 				if (password == "") {
-					password ="pa$$W0rd";
+					password = CONFIG.get('pass');
 				}
 				
 				var originalFile = whichFile.path.replace(".a2c", "");
@@ -222,7 +235,6 @@ $(document).ready(function() {
 	$.each( disks, function( i, value ) {
 	if (value.device!="" ){
 	$( "#sidebar" ).append( '<li><a href="#" nw-path="'+value.device +'"><i class="icon-hdd"></i> '+(value.description !== 'undefined' ? value.description : value.device) +'</a></li>' );
-	//console.log(value.device + ","+ value.description);
 	}
 	});	
 });
